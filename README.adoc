@@ -1,0 +1,24 @@
+elbe-rfs CI-RT
+==============
+
+This git repository hosts all xml files for elbe based root file
+systems (RFS). Those RFS are deployed on the CI-RT test targets.
+
+For a better understanding, have a look at the detailed explanation of
+the https://ci-rt.linutronix.de/RT-Test/about.jsp[CI-RT infrastructure
+setup].
+
+
+Download RFS
+------------
+
+The elbe based RFS are already built an can be downloaded
+https://ci-rt.linutronix.de/download/target-elbe-rfs/[here].
+
+
+Rebuild the RFS
+---------------
+
+The RFS were built using elbe. They can be modified and
+rebuilt. Please refer to https://elbe-rfs.org/docs/[elbe
+documentation] for fundamental explanation how to use elbe.
