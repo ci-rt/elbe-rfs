@@ -37,7 +37,6 @@
       <command>chown jenkins:jenkins /lib/modules</command>
     </finetuning>
     <pkg-list>
-      <pkg>grub-pc</pkg>
       <pkg>bash</pkg>
       <pkg>busybox</pkg>
       <pkg>default-jre-headless</pkg>
