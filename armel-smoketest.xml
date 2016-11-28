@@ -17,7 +17,9 @@
     <passwd>foo</passwd>
     <console>ttyS0,115200</console>
     <package>
-      <cpio><name>testclient.cpio</name></cpio>
+      <tar>
+	<name>ci-rt-rfs_armel.tar.gz</name>
+      </tar>
     </package>
     <fstab>
       <bylabel>

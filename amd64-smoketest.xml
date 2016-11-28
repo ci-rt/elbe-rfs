@@ -16,17 +16,11 @@
     <domain>ci-rt.example.com</domain>
     <passwd>foo</passwd>
     <console>ttyS0,115200</console>
-    <images>
-      <msdoshd>
-	<name>sda.img</name>
-	<size>1900MiB</size>
-	<grub-install />
-	<partition>
-	  <size>remain</size>
-	  <label>rfs</label>
-	</partition>
-      </msdoshd>
-    </images>
+    <package>
+      <tar>
+	<name>ci-rt-rfs_amd64.tar.gz</name>
+      </tar>
+    </package>
     <fstab>
       <bylabel>
 	<label>rfs</label>
