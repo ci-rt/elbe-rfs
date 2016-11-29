@@ -19,6 +19,6 @@ https://ci-rt.linutronix.de/download/target-elbe-rfs/[here].
 Rebuild the RFS
 ---------------
 
-The RFS were built using elbe. They can be modified and
-rebuilt. Please refer to https://elbe-rfs.org/docs/[elbe
+The RFS were built using elbe (version 1.9.15). They can be modified
+and rebuilt. Please refer to https://elbe-rfs.org/docs/[elbe
 documentation] for fundamental explanation how to use elbe.
