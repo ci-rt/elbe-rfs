@@ -1,0 +1,52 @@
+# This uEnv.txt file can contain additional environment settings that you
+# want to set in U-Boot at boot time.  This can be simple variables such
+# as the serverip or custom variables.  The format of this file is:
+#    variable=value
+# NOTE: This file will be evaluated after the bootcmd is run and the
+#       bootcmd must be set to load this file if it exists (this is the
+#       default on all newer U-Boot images.  This also means that some
+#       variables such as bootdelay cannot be changed by this file since
+#       it is not evaluated until the bootcmd is run.
+
+optargs=quiet printk.time=yes
+
+# Bootonce Variables
+bootonce_file=bzImage
+bootonce_dtb=dts/imx7d-sdb.dtb
+bootonce_initrd=initrd
+bootonce_bootpart=0:2
+bootonce_rootpart=0:2
+bootonce_bootdir=/boot/jenkins
+bootonce_devtype=mmc
+bootonce_devnum=0
+
+# control variables
+bootonce=yes
+bootonce_gen=1
+#bootonce_done // this var must NOT be defined in this file, it is saved to match bootonce_gen in uboot.env when a boot trial is starting
+
+# Can't expand vars at parse time so do so in this script
+# bootpart defaults to rootpart if not set
+# fdtdir defaults to bootdir if not set
+fixupenv=test -n ${bootpart} || setenv bootpart ${rootpart}; test -n ${fdtdir} || setenv fdtdir ${bootdir}
+printbootvars=echo "**** " bootpart=${bootpart} rootpart=${rootpart} kernel=${bootdir}/${bootfile} dtb=${fdtdir}/${fdtfile}; sleep 1
+
+# Add initrd support to mmcboot (non-fitmode only for now)
+load_initrd=load ${devtype} ${bootpart} ${rdaddr} ${bootdir}/${name_initrd}
+mmcloados=run args_mmc; if run loadfdt; then setenv fdt_spec ${fdtaddr}; else echo "WARN: Cannot load the DT file: $fdtfile"; setenv fdt_spec ""; fi; if run load_initrd; then setenv rd_spec ${rdaddr}:${filesize}; else echo "${name_initrd} not found, skipping"; setenv rd_spec "-"; fi; bootz ${loadaddr} ${rd_spec} ${fdt_spec}
+
+# Print delimiter on test boot, to be able to split test log and normal log
+printkexecdelimiter=echo "--- CI-RT Booting Testkernel Kexec ---"
+
+# Bootonce script support
+# Can't change rootpart, bootpart, bootdir, etc until we know we will try and after we save the env
+try_bootonce=if test ${bootonce} = yes; then if test "${bootonce_done}"x = "${bootonce_gen}"x; then echo bootonce already done for generation ${bootonce_gen}; else if run bootonce_${bootonce_devtype}boot; then setenv bootonce_done ${bootonce_gen}; saveenv; setenv bootfile ${bootonce_file}; setenv fdtfile ${bootonce_dtb}; setenv name_initrd ${bootonce_initrd}; setenv bootpart ${bootonce_bootpart}; setenv rootpart ${bootonce_rootpart}; setenv bootdir ${bootonce_bootdir}; setenv devtype ${bootonce_devtype}; setenv devnum ${bootonce_devnum}; setenv fdtdir ${bootonce_bootdir}; setenv boot_fit 0; run printbootvars; run printkexecdelimiter; run ${bootonce_devtype}boot; fi; fi; fi
+
+# these are replacements that only test if the kernel file exists; if it does, the normal xxxboot will be used
+bootonce_loadimage=echo "BOOTONCE checking ${bootonce_dev} ${bootonce_bootpart} ${bootonce_bootdir}/${bootonce_file}"; load ${bootonce_devtype} ${bootonce_bootpart} ${loadaddr} ${bootonce_bootdir}/${bootonce_file}
+bootonce_mmcboot=mmc dev ${bootonce_devnum}; if mmc rescan; then run bootonce_loadimage; else false; fi
+
+# the whole sequence now. This falls through to original sequence if bootonce is not trying a boot
+uenvcmd=run try_bootonce; run fixupenv; run printbootvars;
+
+# any variables added at run time will be after here

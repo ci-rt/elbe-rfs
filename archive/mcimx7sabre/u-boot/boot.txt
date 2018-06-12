@@ -1,0 +1,8 @@
+setenv bootenvfile 'boot/uEnv.txt'
+setenv envboot 'mmc dev ${mmcdev}; if mmc rescan; then echo SD/MMC found on device ${mmcdev};if run loadbootenv; then echo Loaded env from ${bootenvfile};run importbootenv;fi;if test -n $uenvcmd; then echo Running uenvcmd ...;run uenvcmd;fi;fi;'
+setenv importbootenv 'echo Importing environment from mmc${mmcdev} ...; env import -t ${loadaddr} ${filesize}'
+setenv loadbootenv 'ext4load mmc ${mmcdev}:2 ${loadaddr} ${bootenvfile}'
+
+run envboot
+run loadimage
+run mmcboot

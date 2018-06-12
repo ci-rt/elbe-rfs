@@ -1,0 +1,44 @@
+#!/bin/bash -e
+#
+# rc.local
+#
+# This script is used as part of the fixed path BOOTONCE support
+# In this model BOOTONCE is "always" active and looking for the bootone kernel
+# on a fixed path.
+#
+# On any good boot any file found at the fixed path is renamed
+# When the file is found the BOOTONCE method is rearmed by incrementing the
+# generation counter.
+#
+# This move/re-arm will be done by the test kernel if it makes it to rc.local
+#
+# If the test kernel fails the BOOTONCE generation counter will stop the
+# bootloader from trying the test kernel again and it will boot the know good
+# kernel.When the known good kernel runs this rc.local it will move the file
+# and rearm BOOTONCE
+#
+# Any number of boots (0 or 100s) can then happen and the bootloader will
+# find no BOOTONCE kernel file so will booot the known good kernel.
+#
+# While the system is running any good kernel, the test infrastructure can
+# scp new files into the fixed bootpath and they will be used when the test
+#infrastucture casused the system to boot again
+#
+
+if [ -f /boot/jenkins/bzImage ]
+then
+    # get rid of any previous
+    rm -rf /boot/jenkins/dts-test || true
+    rm -rf /boot/jenkins/initrd-test || true
+
+    # moved the just tested kernel out of the way
+    mv /boot/jenkins/bzImage /boot/jenkins/bzImage-test
+    mv /boot/jenkins/dts /boot/jenkins/dts-test || true
+    mv /boot/jenkins/initrd /boot/jenkins/initrd-test || true
+
+    echo "--- Rearming BOOTONCE ---"
+    /sbin/u-boot-adj inc bootonce_gen
+    sync
+fi
+
+exit 0

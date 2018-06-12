@@ -1,0 +1,70 @@
+#!/bin/bash
+
+#set -x
+
+# Adjust u-boot var settings in /boot/u-boot/uEnv.txt
+
+: ${UBOOT_DIR:=/boot}
+ENVFILE=$UBOOT_DIR/uEnv.txt
+
+get_var() {
+    value=$(grep ^$1= $ENVFILE)
+    if [ -n "$value" ]; then
+        echo ${value#*=}
+    else
+        false
+    fi
+}
+
+set_var() {
+    if grep ^$1= $ENVFILE  >/dev/null; then
+        sed -i -e "s/^$1=.*\$/$1=$2/" $ENVFILE
+    else
+        false
+    fi
+}
+
+add_var() {
+    if grep ^$1= $ENVFILE >/dev/null; then
+        sed -i -e "s/^$1=.*$/$1=$2/" $ENVFILE
+    else
+        echo "$1=$2" >>$ENVFILE
+    fi
+}
+
+inc_var() {
+    value=$(get_var $1)
+    value=$(( $value + 1 ));
+    set_var $1 $value
+}
+
+do_help() {
+    echo "Adjust env var values in $ENVFILE for u-boot"
+    echo "u-boot-adj get <name>"
+    echo "u-boot-adj set <name> <value>"
+    echo "u-boot-adj add <name> <value>"
+    echo "u-boot-adj inc <name>"
+}
+
+case $1 in
+    get)
+        get_var $2
+        ;;
+
+    set)
+        set_var $2 $3
+        ;;
+
+    add)
+        add_var $2 $3
+        ;;
+
+    inc)
+        inc_var $2
+        ;;
+
+    *)
+        do_help
+        false
+        ;;
+esac

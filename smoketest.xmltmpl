@@ -5,6 +5,7 @@
     <name variant="armel">armel-smoketest</name>
     <name variant="armhf">armhf-smoketest</name>
     <name variant="i386">i386-smoketest</name>
+    <name variant="mcimx7sabre">mcimx7sabre</name>
     <version>1.0</version>
     <description>debian stretch smoketest mini RFS</description>
     <buildtype variant="amd64">amd64</buildtype>
@@ -12,6 +13,7 @@
     <buildtype variant="armel">armel</buildtype>
     <buildtype variant="armhf">armhf</buildtype>
     <buildtype variant="i386">i386</buildtype>
+    <buildtype variant="mcimx7sabre">armhf</buildtype>
     <mirror>
       <primary_host>httpredir.debian.org</primary_host>
       <primary_path>/debian</primary_path>
@@ -25,9 +27,11 @@
     <hostname variant="armel">smoke-armel</hostname>
     <hostname variant="armhf">smoke-armhf</hostname>
     <hostname variant="i386">smoke-i386</hostname>
+    <hostname variant="mcimx7sabre">mcimx7sabre</hostname>
     <domain>ci-rt.example.com</domain>
     <passwd>foo</passwd>
     <console>ttyS0,115200</console>
+    <console variant="mcimx7sabre">ttymxc0,115200</console>
     <package>
       <tar>
 	<name variant="amd64">ci-rt-rfs_amd64.tar.gz</name>
@@ -35,8 +39,25 @@
 	<name variant="armel">ci-rt-rfs_armel.tar.gz</name>
 	<name variant="armhf">ci-rt-rfs_armhf.tar.gz</name>
 	<name variant="i386">ci-rt-rfs_i386.tar.gz</name>
+	<name variant="mcimx7sabre">mcimx7sabre_armhf.tar.gz</name>
       </tar>
     </package>
+    <images variant="mcimx7sabre">
+      <msdoshd>
+        <name>mcimx7sabre.img</name>
+        <size>4000MiB</size>
+	<binary offset="2" blocksize="512">u-boot-imx7dsabresd_sd.imx</binary>
+        <partition>
+          <size>200MiB</size>
+          <label>boot</label>
+          <bootable />
+        </partition>
+        <partition>
+          <size>remain</size>
+          <label>rfs</label>
+        </partition>
+      </msdoshd>
+    </images>
     <fstab>
       <bylabel>
 	<label>rfs</label>
@@ -45,6 +66,13 @@
 	  <type>ext4</type>
 	  <tune2fs>-i 0</tune2fs>
 	</fs>
+      </bylabel >
+      <bylabel variant="mcimx7sabre">
+        <label>boot</label>
+        <mountpoint>/uboot</mountpoint>
+        <fs>
+          <type>vfat</type>
+        </fs>
       </bylabel>
     </fstab>
     <finetuning>
@@ -54,6 +82,7 @@
       <command>chown -R jenkins:jenkins /boot/jenkins</command>
       <command>chown -R jenkins:jenkins /home/jenkins</command>
       <command>chown jenkins:jenkins /lib/modules</command>
+      <t2p_mv variant="mcimx7sabre" path="/u-boot/u-boot-imx7dsabresd_sd.imx">u-boot-imx7dsabresd_sd.imx</t2p_mv>
     </finetuning>
     <pkg-list>
       <pkg variant="amd64">linux-image-amd64</pkg>
@@ -74,4 +103,5 @@
     </pkg-list>
   </target>
   <archivedir>archive/common</archivedir>
+  <archivedir variant="mcimx7sabre">archive/mcimx7sabre</archivedir>
 </ns0:RootFileSystem>
