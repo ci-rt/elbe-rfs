@@ -12,7 +12,7 @@
 # By default this script does nothing.
 
 BOARDDTB=none
-EXTRA="ip=dhcp net.ifnames=0 console=ttyS0,115200 printk.time=y quiet loglevel=5"
+EXTRA="ip=dhcp net.ifnames=0 console=ttyS0,115200 printk.time=y"
 ROOT="UUID=$(sed 's/.*UUID=\([^ ]*\).*/\1/' /proc/cmdline)"
 
 CMDLINE="root=$ROOT ro $EXTRA"
