@@ -68,6 +68,7 @@
       <pkg>rt-tests</pkg>
       <pkg>sudo</pkg>
       <pkg>openssh-server</pkg>
+      <pkg>xz-utils</pkg>
     </pkg-list>
   </target>
   <archivedir>archive/common</archivedir>
