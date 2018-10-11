@@ -16,9 +16,13 @@ EXTRA="ip=dhcp net.ifnames=0 console=ttyS0,115200 printk.time=y"
 ROOT="UUID=$(sed 's/.*UUID=\([^ ]*\).*/\1/' /proc/cmdline)"
 
 CMDLINE="root=$ROOT ro $EXTRA"
+KLOG="/dev/kmsg"
 
 if [ -f /boot/jenkins/bzImage ]
 then
+    echo "<2>CI-RT Test Kernel Image Kexec" > $KLOG
+    echo "<2>new kernel commandline: $CMDLINE" > $KLOG
+
     if [ -e /boot/jenkins/initrd ]
     then
 	INITRD="--initrd=/boot/jenkins/initrd"
@@ -29,7 +33,6 @@ then
 	DTB="--dtb=/boot/jenkins/dts/$BOARDDTB"
     fi
 
-    echo "--- Booting Testkernel ---"
     rm -rf /boot/jenkins/dts-test
     rm -rf /boot/jenkins/initrd-test
     mv /boot/jenkins/bzImage /boot/jenkins/bzImage-test
@@ -42,6 +45,10 @@ then
     /etc/init.d/networking stop
     echo s > /proc/sysrq-trigger
     echo u > /proc/sysrq-trigger
+
+    # Do not remove this echo!
+    # It is required to properly split serial console output
+    echo "<2>--- CI-RT Booting Testkernel Kexec ---" > $KLOG
     kexec -d -e
 fi
 
