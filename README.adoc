@@ -22,3 +22,16 @@ Rebuild the RFS
 The RFS were built using elbe (version 1.9.15). They can be modified
 and rebuilt. Please refer to https://elbe-rfs.org/docs/[elbe
 documentation] for fundamental explanation how to use elbe.
+
+Overlay files from SCM
+~~~~~~~~~~~~~~~~~~~~~~
+Instead puting the customized overlay files into an archive and have no
+clear version control over these files, the overlay files are checked in
+and need to be added to the recipe. To make it evident, the recipe need
+some preprocessing, the file is renamed to smoketest.tmpl.
+Please perform the following steps before building the receipe:
+
+$ elbe preprocess --variant=<NAME> -o <NAME>.xml smoketest.xmltmpl
+$ elbe chg_archive <NAME>.xml overlay
+
+After this preprocessing the newly prepared rfs.xml can be used as usual.
