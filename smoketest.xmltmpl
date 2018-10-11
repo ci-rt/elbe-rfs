@@ -1,10 +1,12 @@
 <ns0:RootFileSystem xmlns:ns0="https://www.linutronix.de/projects/Elbe" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" created="2009-05-20T08:50:56" revision="6" xsi:schemaLocation="https://www.linutronix.de/projects/Elbe dbsfed.xsd">
   <project>
     <name variant="amd64">amd64-smoketest</name>
+    <name variant="armel">armel-smoketest</name>
     <name variant="i386">i386-smoketest</name>
     <version>1.0</version>
     <description>debian jessie smoketest mini RFS</description>
     <buildtype variant="amd64">amd64</buildtype>
+    <buildtype variant="armel">armel</buildtype>
     <buildtype variant="i386">i386</buildtype>
     <mirror>
       <primary_host>httpredir.debian.org</primary_host>
@@ -15,6 +17,7 @@
   </project>
   <target>
     <hostname variant="amd64">smoke-amd64</hostname>
+    <hostname variant="armel">smoke-armel</hostname>
     <hostname variant="i386">smoke-i386</hostname>
     <domain>ci-rt.example.com</domain>
     <passwd>foo</passwd>
@@ -22,6 +25,7 @@
     <package>
       <tar>
 	<name variant="amd64">ci-rt-rfs_amd64.tar.gz</name>
+	<name variant="armel">ci-rt-rfs_armel.tar.gz</name>
 	<name variant="i386">ci-rt-rfs_i386.tar.gz</name>
       </tar>
     </package>
@@ -46,7 +50,7 @@
     <pkg-list>
       <pkg variant="amd64">linux-image-amd64</pkg>
       <pkg variant="i386">linux-image-686-pae</pkg>
-      <pkg>grub-pc</pkg>
+      <pkg variant="amd64,i386">grub-pc</pkg>
       <pkg>bash</pkg>
       <pkg>busybox</pkg>
       <pkg>default-jre-headless</pkg>
