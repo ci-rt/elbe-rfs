@@ -61,6 +61,7 @@
       <pkg variant="amd64,i386">grub-pc</pkg>
       <pkg>bash</pkg>
       <pkg>busybox</pkg>
+      <pkg>dbus</pkg>
       <pkg>default-jre-headless</pkg>
       <pkg>initramfs-tools</pkg>
       <pkg>kexec-tools</pkg>
