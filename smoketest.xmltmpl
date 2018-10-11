@@ -6,7 +6,7 @@
     <name variant="armhf">armhf-smoketest</name>
     <name variant="i386">i386-smoketest</name>
     <version>1.0</version>
-    <description>debian jessie smoketest mini RFS</description>
+    <description>debian stretch smoketest mini RFS</description>
     <buildtype variant="amd64">amd64</buildtype>
     <buildtype variant="arm64">aarch64</buildtype>
     <buildtype variant="armel">armel</buildtype>
@@ -17,7 +17,7 @@
       <primary_path>/debian</primary_path>
       <primary_proto>http</primary_proto>
     </mirror>
-    <suite>jessie</suite>
+    <suite>stretch</suite>
   </project>
   <target>
     <hostname variant="amd64">smoke-amd64</hostname>
