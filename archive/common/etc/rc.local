@@ -25,24 +25,29 @@ then
 
     if [ -e /boot/jenkins/initrd ]
     then
-	INITRD="--initrd=/boot/jenkins/initrd"
+	INITRD="--initrd=/boot/jenkins/initrd-test"
     fi
 
     if [ -e /boot/jenkins/dts/$BOARDDTB ]
     then
-	DTB="--dtb=/boot/jenkins/dts/$BOARDDTB"
+	DTB="--dtb=/boot/jenkins/dts-test/$BOARDDTB"
     fi
 
+    # Remove old test images
+    rm -rf /boot/jenkins/bzImage-test
     rm -rf /boot/jenkins/dts-test
     rm -rf /boot/jenkins/initrd-test
+
+    # Move new test images to ensure reboot boots default image
     mv /boot/jenkins/bzImage /boot/jenkins/bzImage-test
-
-    kexec -l /boot/jenkins/bzImage-test --append=$CMDLINE $INITRD $DTB
-
     mv /boot/jenkins/dts /boot/jenkins/dts-test || true
     mv /boot/jenkins/initrd /boot/jenkins/initrd-test || true
 
+    kexec -l /boot/jenkins/bzImage-test --append=$CMDLINE $INITRD $DTB
+
+    # Stop network to prevent reboot problems of special systems
     /etc/init.d/networking stop
+
     echo s > /proc/sysrq-trigger
     echo u > /proc/sysrq-trigger
 
