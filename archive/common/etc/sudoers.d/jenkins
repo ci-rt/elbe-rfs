@@ -1,1 +1,1 @@
-jenkins ALL = NOPASSWD: /usr/bin/cyclictest,/sbin/shutdown,/bin/systemctl,/usr/bin/dpkg
+jenkins ALL = NOPASSWD: /sbin/modprobe,/usr/bin/cyclictest,/sbin/shutdown,/bin/systemctl,/usr/bin/dpkg,/bin/dmesg
