@@ -30,7 +30,7 @@
     <hostname variant="mcimx7sabre">mcimx7sabre</hostname>
     <domain>ci-rt.example.com</domain>
     <passwd>foo</passwd>
-    <console>ttyS0,115200</console>
+    <console variant="amd64,arm64,armel,armhf,i386">ttyS0,115200</console>
     <console variant="mcimx7sabre">ttymxc0,115200</console>
     <package>
       <tar>
