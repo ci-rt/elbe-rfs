@@ -6,14 +6,14 @@
     <name variant="armhf">armhf-smoketest</name>
     <name variant="i386">i386-smoketest</name>
     <name variant="mcimx7sabre">mcimx7sabre</name>
+    <name variant="phyflex-imx6">phyflex-imx6</name>
     <version>1.0</version>
     <description>debian stretch smoketest mini RFS</description>
     <buildtype variant="amd64">amd64</buildtype>
     <buildtype variant="arm64">aarch64</buildtype>
     <buildtype variant="armel">armel</buildtype>
-    <buildtype variant="armhf">armhf</buildtype>
+    <buildtype variant="armhf,mcimx7sabre,phyflex-imx6">armhf</buildtype>
     <buildtype variant="i386">i386</buildtype>
-    <buildtype variant="mcimx7sabre">armhf</buildtype>
     <mirror>
       <primary_host>httpredir.debian.org</primary_host>
       <primary_path>/debian</primary_path>
@@ -28,9 +28,10 @@
     <hostname variant="armhf">smoke-armhf</hostname>
     <hostname variant="i386">smoke-i386</hostname>
     <hostname variant="mcimx7sabre">mcimx7sabre</hostname>
+    <hostname variant="phyflex-imx6">phyflex-imx6</hostname>
     <domain>ci-rt.example.com</domain>
     <passwd>foo</passwd>
-    <console variant="amd64,arm64,armel,armhf,i386">ttyS0,115200</console>
+    <console variant="amd64,arm64,armel,armhf,i386,phyflex-imx6">ttyS0,115200</console>
     <console variant="mcimx7sabre">ttymxc0,115200</console>
     <package>
       <tar>
@@ -40,6 +41,7 @@
 	<name variant="armhf">ci-rt-rfs_armhf.tar.gz</name>
 	<name variant="i386">ci-rt-rfs_i386.tar.gz</name>
 	<name variant="mcimx7sabre">mcimx7sabre_armhf.tar.gz</name>
+	<name variant="phyflex-imx6">phyflex-imx6_armhf.tar.gz</name>
       </tar>
     </package>
     <images variant="mcimx7sabre">
@@ -47,6 +49,21 @@
         <name>mcimx7sabre.img</name>
         <size>4000MiB</size>
 	<binary offset="2" blocksize="512">u-boot-imx7dsabresd_sd.imx</binary>
+        <partition>
+          <size>200MiB</size>
+          <label>boot</label>
+          <bootable />
+        </partition>
+        <partition>
+          <size>remain</size>
+          <label>rfs</label>
+        </partition>
+      </msdoshd>
+    </images>
+    <images variant="phyflex-imx6">
+      <msdoshd>
+        <name>phyflex-imx6.img</name>
+        <size>4000MiB</size>
         <partition>
           <size>200MiB</size>
           <label>boot</label>
@@ -67,8 +84,11 @@
 	  <tune2fs>-i 0</tune2fs>
 	</fs>
       </bylabel >
-      <bylabel variant="mcimx7sabre">
+      <bylabel variant="mcimx7sabre,phyflex-imx6">
         <label>boot</label>
+	<!-- Put bootloader and kernel files to /uboot to ensure the DUT
+	     boots fine, even if the kernel under test is broken.
+	-->
         <mountpoint>/uboot</mountpoint>
         <fs>
           <type>vfat</type>
@@ -104,4 +124,5 @@
   </target>
   <archivedir>archive/common</archivedir>
   <archivedir variant="mcimx7sabre">archive/mcimx7sabre</archivedir>
+  <archivedir variant="phyflex-imx6">archive/phyflex-imx6</archivedir>
 </ns0:RootFileSystem>
