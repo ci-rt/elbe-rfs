@@ -13,7 +13,7 @@
 
 BOARDDTB=none
 EXTRA="ip=dhcp net.ifnames=0 console=ttyS0,115200 printk.time=y"
-ROOT="UUID=$(sed 's/.*UUID=\([^ ]*\).*/\1/' /proc/cmdline)"
+ROOT="LABEL=rfs"
 
 CMDLINE="root=$ROOT ro $EXTRA"
 KLOG="/dev/kmsg"
