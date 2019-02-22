@@ -43,7 +43,7 @@ then
     mv /boot/jenkins/dts /boot/jenkins/dts-test || true
     mv /boot/jenkins/initrd /boot/jenkins/initrd-test || true
 
-    kexec -l /boot/jenkins/bzImage-test --append=$CMDLINE $INITRD $DTB
+    kexec -l /boot/jenkins/bzImage-test --append="$CMDLINE" $INITRD $DTB
 
     # Stop network to prevent reboot problems of special systems
     /etc/init.d/networking stop
