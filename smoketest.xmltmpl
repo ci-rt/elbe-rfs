@@ -47,7 +47,7 @@
     <images variant="mcimx7sabre">
       <msdoshd>
         <name>mcimx7sabre.img</name>
-        <size>4000MiB</size>
+        <size>3500MiB</size>
 	<binary offset="2" blocksize="512">u-boot-imx7dsabresd_sd.imx</binary>
         <partition>
           <size>200MiB</size>
@@ -63,7 +63,7 @@
     <images variant="phyflex-imx6">
       <msdoshd>
         <name>phyflex-imx6.img</name>
-        <size>4000MiB</size>
+        <size>3500MiB</size>
         <partition>
           <size>200MiB</size>
           <label>boot</label>
