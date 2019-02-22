@@ -20,6 +20,14 @@ KLOG="/dev/kmsg"
 
 if [ -f /boot/jenkins/bzImage ]
 then
+    # check if zipped
+    gzip -qt /boot/jenkins/bzImage && \
+        mv /boot/jenkins/bzImage /boot/jenkins/bzImage.gz
+    if [ -e /boot/jenkins/bzImage.gz ]
+    then
+        gunzip /boot/jenkins/bzImage.gz
+    fi
+
     echo "<2>CI-RT Test Kernel Image Kexec" > $KLOG
     echo "<2>new kernel commandline: $CMDLINE" > $KLOG
 
