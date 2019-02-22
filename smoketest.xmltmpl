@@ -118,6 +118,7 @@
       <pkg>ntpdate</pkg>
       <pkg>rt-tests</pkg>
       <pkg>sudo</pkg>
+      <pkg>stress-ng</pkg>
       <pkg>openssh-server</pkg>
       <pkg>xz-utils</pkg>
     </pkg-list>
